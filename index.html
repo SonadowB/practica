@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>te observo siempre 7w7 amenaza</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      width: 100vw;
+      background: black;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      border: 2px solid #e8002a;
+      padding: 30px;
+      color: white;
+      font-family: monospace;
+      display: none;
+      text-align: center;
+      z-index: 10;
+    }
+
+    #overlay button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #e8002a;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #overlay button:hover {
+      background-color: #ff3355;
+    }
+
+    #fullImage {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 5;
+    }
+
+    #finalText {
+      display: none;
+      position: fixed;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 80px;
+      font-family: 'monospace';
+      z-index: 6;
+      opacity: 1;
+      animation: fadeOut 6s ease-in-out forwards;
+      animation-delay: 1s;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      60% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canv"></canvas>
+
+  <div id="overlay">
+    <p>¿Quieres saber cuanto te amo?</p>
+    <button onclick="window.location.href='https://example.com'">si</button>
+    <button onclick="showFinal()">no.</button>
+  </div>
+
+  <img id="fullImage" src="https://static.wikia.nocookie.net/nightmare-logo/images/9/98/Sonic_CD_Message_in_Japanese.png/revision/latest/scale-to-width-down/985?cb=20230416124048" alt="Imagen Final">
+  <div id="finalText">CAGASTE...</div>
+
+  <audio id="finalSound" src="videoplayback (mp3cut.net).mp3"></audio>
+
+  <script>
+    const canvas = document.getElementById('canv');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('overlay');
+    const fullImage = document.getElementById('fullImage');
+    const finalSound = document.getElementById('finalSound');
+    const finalText = document.getElementById('finalText');
+
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const word = "Te Amo";
+    const fontSize = 20;
+    const colSpacing = 30;
+    const cols = Math.floor(w / colSpacing);
+    let ypos = Array(cols).fill(0).map(() => Math.random() * h);
+
+    let intervalId;
+
+    function matrix() {
+      ctx.fillStyle = '#0002';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.fillStyle = '#e8002a';
+      ctx.font = `${fontSize}px monospace`;
+
+      ypos.forEach((y, ind) => {
+        const x = ind * colSpacing;
+        ctx.fillText(word, x, y);
+
+        if (y > h + Math.random() * 1000) {
+          ypos[ind] = -fontSize * Math.random() * 5;
+        } else {
+          ypos[ind] = y + fontSize;
+        }
+      });
+    }
+
+    function startMatrix() {
+      intervalId = setInterval(matrix, 50);
+    }
+
+    function stopMatrix() {
+      clearInterval(intervalId);
+    }
+
+    function showFinal() {
+      stopMatrix();
+      canvas.style.display = "none";
+      overlay.style.display = "none";
+      fullImage.style.display = "block";
+      finalText.style.display = "block";
+      finalSound.play();
+    }
+
+    // Iniciar animación y temporizador
+    startMatrix();
+    setTimeout(() => {
+      stopMatrix();
+      overlay.style.display = "block";
+    }, 1 * 10 * 1000); // 2 minutos
+  </script>
+</body>
+</html>
