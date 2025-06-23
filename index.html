@@ -18,6 +18,21 @@
       display: block;
     }
 
+    #startButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #e8002a;
+      color: white;
+      font-size: 24px;
+      padding: 20px 40px;
+      border: none;
+      cursor: pointer;
+      font-family: monospace;
+      z-index: 20;
+    }
+
     #overlay {
       position: absolute;
       top: 50%;
@@ -83,9 +98,11 @@
 <body>
   <canvas id="canv"></canvas>
 
+  <button id="startButton">🔊 Sube el volumen</button>
+
   <div id="overlay">
-    <p>¿Quieres saber cuanto te amo?</p>
-    <button onclick="window.location.href='https://www.youtube.com/watch?v=Vwv6LyamT4c&list=RDMMVwv6LyamT4c&start_radio=1'">si</button>
+    <p>¿Quieres saber cuánto te amo?</p>
+    <button onclick="window.location.href='https://www.youtube.com/watch?v=Vwv6LyamT4c&list=RDMMVwv6LyamT4c&start_radio=1'">sí</button>
     <button onclick="showFinal()">no.</button>
   </div>
 
@@ -93,6 +110,7 @@
   <div id="finalText">CAGASTE...</div>
 
   <audio id="finalSound" src="videoplayback (mp3cut.net).mp3"></audio>
+  <audio id="introSound" src="videoplayback_ZIn01ZxG.mp3"></audio>
 
   <script>
     const canvas = document.getElementById('canv');
@@ -101,11 +119,13 @@
     const fullImage = document.getElementById('fullImage');
     const finalSound = document.getElementById('finalSound');
     const finalText = document.getElementById('finalText');
+    const introSound = document.getElementById('introSound');
+    const startButton = document.getElementById('startButton');
 
     let w = canvas.width = window.innerWidth;
     let h = canvas.height = window.innerHeight;
 
-    const word = "Te Amo";
+    const word = "Te Amo💖";
     const fontSize = 20;
     const colSpacing = 30;
     const cols = Math.floor(w / colSpacing);
@@ -133,7 +153,7 @@
     }
 
     function startMatrix() {
-      intervalId = setInterval(matrix, 50);
+      intervalId = setInterval(matrix, 120);
     }
 
     function stopMatrix() {
@@ -149,12 +169,20 @@
       finalSound.play();
     }
 
-    // Iniciar animación y temporizador
-    startMatrix();
-    setTimeout(() => {
-      stopMatrix();
-      overlay.style.display = "block";
-    }, 1 * 10 * 1000); // 2 minutos
+    // Evento: al hacer clic en "sube el volumen"
+    startButton.addEventListener('click', () => {
+      introSound.play().catch(err => {
+        console.warn("Autoplay bloqueado:", err);
+      });
+      startButton.style.display = 'none';
+      startMatrix();
+
+      // Mostrar el overlay después de 10 segundos
+      setTimeout(() => {
+        stopMatrix();
+        overlay.style.display = "block";
+      }, 39 * 1000);
+    });
   </script>
 </body>
 </html>
